@@ -1,0 +1,12 @@
+6
+Alice
+Bob
+Charlie
+Diana
+Eve
+Frank
+Alice Bob
+Alice Charlie
+Bob Diana
+Charlie Diana
+Eve Frank
