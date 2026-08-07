@@ -1,0 +1,91 @@
+input02.txt
+20
+Alice
+Bob
+Charlie
+Diana
+Eve
+Frank
+Grace
+Hugo
+Isabelle
+Jack
+Karen
+Liam
+Mona
+Nathan
+Olivia
+Paul
+Quentin
+Rose
+Sophie
+Tom
+Alice Isabelle
+Alice Tom
+Bob Jack
+Bob Quentin
+Bob Sophie
+Charlie Grace
+Diana Karen
+Diana Nathan
+Diana Rose
+Frank Mona
+Frank Nathan
+Frank Olivia
+Grace Jack
+Grace Rose
+Hugo Paul
+Hugo Quentin
+Hugo Tom
+Isabelle Sophie
+Jack Olivia
+Jack Quentin
+Jack Sophie
+Karen Liam
+Karen Mona
+Karen Nathan
+Karen Olivia
+Karen Sophie
+Liam Paul
+Mona Rose
+Mona Sophie
+Nathan Olivia
+Nathan Rose
+Olivia Rose
+Paul Quentin
+Rose Tom
+Sophie Tom
+
+--- Graphe ---
+Alice     : Isabelle, Tom  
+Bob       : Jack, Quentin, Sophie  
+Charlie   : Grace  
+Diana     : Karen, Nathan, Rose  
+Eve       :  
+Frank     : Mona, Nathan, Olivia  
+Grace     : Charlie, Jack, Rose  
+Hugo      : Paul, Quentin, Tom  
+Isabelle  : Alice, Sophie  
+Jack      : Bob, Grace, Olivia, Quentin, Sophie  
+Karen     : Diana, Liam, Mona, Nathan, Olivia, Sophie  
+Liam      : Karen, Paul  
+Mona      : Frank, Karen, Rose, Sophie  
+Nathan    : Diana, Frank, Karen, Olivia, Rose  
+Olivia    : Frank, Jack, Karen, Nathan, Rose  
+Paul      : Hugo, Liam, Quentin  
+Quentin   : Bob, Hugo, Jack, Paul  
+Rose      : Diana, Grace, Mona, Nathan, Olivia, Tom  
+Sophie    : Bob, Isabelle, Jack, Karen, Mona, Tom  
+Tom       : Alice, Hugo, Rose, Sophie  
+
+
+--- Communautés détectées ---
+Communauté 1 : Alice, Bob, Charlie, Diana, Frank, Grace, Hugo, Isabelle, Jack, Karen, Liam, Mona, Nathan, Olivia, Paul, Quentin, Rose, Sophie, Tom
+Communauté 2 : Eve
+
+--- Plus court chemin de Alice a Frank ---
+Alice → Isabelle → Sophie → Mona → Frank (distance : 4)
+
+--- Points d'articulation ---
+Grace
+

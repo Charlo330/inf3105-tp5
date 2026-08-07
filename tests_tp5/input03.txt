@@ -1,0 +1,26 @@
+13
+Alice
+Bob
+Charlie
+Diana
+Eve
+Frank
+Grace
+Hugo
+Isabelle
+Jack
+Karen
+Liam
+Mona
+Alice Bob
+Alice Charlie
+Bob Diana
+Charlie Eve
+Diana Frank
+Eve Grace
+Frank Grace
+Hugo Isabelle
+Isabelle Jack
+Jack Karen
+Karen Liam
+Liam Mona

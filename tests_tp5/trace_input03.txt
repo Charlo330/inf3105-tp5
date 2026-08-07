@@ -1,0 +1,57 @@
+input03.txt
+13
+Alice
+Bob
+Charlie
+Diana
+Eve
+Frank
+Grace
+Hugo
+Isabelle
+Jack
+Karen
+Liam
+Mona
+Alice Bob
+Alice Charlie
+Bob Diana
+Charlie Eve
+Diana Frank
+Eve Grace
+Frank Grace
+Hugo Isabelle
+Isabelle Jack
+Jack Karen
+Karen Liam
+Liam Mona
+
+
+--- Graphe ---
+Alice     : Bob, Charlie  
+Bob       : Alice, Diana  
+Charlie   : Alice, Eve  
+Diana     : Bob, Frank  
+Eve       : Charlie, Grace  
+Frank     : Diana, Grace  
+Grace     : Eve, Frank  
+Hugo      : Isabelle  
+Isabelle  : Hugo, Jack  
+Jack      : Isabelle, Karen  
+Karen     : Jack, Liam  
+Liam      : Karen, Mona  
+Mona      : Liam  
+
+--- Communautés détectées ---
+Communauté 1 : Alice, Bob, Charlie, Diana, Eve, Frank, Grace
+Communauté 2 : Hugo, Isabelle, Jack, Karen, Liam, Mona
+
+--- Plus court chemin de Bob a Grace ---
+Bob → Diana → Frank → Grace (distance : 3)
+
+--- Points d'articulation ---
+Isabelle
+Jack
+Karen
+Liam
+

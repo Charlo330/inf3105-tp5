@@ -1,0 +1,33 @@
+input01.txt
+6
+Alice
+Bob
+Charlie
+Diana
+Eve
+Frank
+Alice Bob
+Alice Charlie
+Bob Diana
+Charlie Diana
+Charlie Eve
+Eve Frank
+
+--- Graphe ---
+Alice : Bob Charlie 
+Bob : Alice Diana 
+Charlie : Alice Diana Eve 
+Diana : Bob Charlie 
+Eve : Charlie Frank 
+Frank : Eve 
+
+--- Communautés détectées ---
+Communauté 1 : Alice Bob Diana Charlie Eve Frank 
+
+--- Plus court chemin de Alice a Frank ---
+Alice -> Charlie -> Eve -> Frank (distance : 3)
+
+--- Points d'articulation ---
+Charlie
+Eve
+

@@ -1,0 +1,56 @@
+20
+Alice
+Bob
+Charlie
+Diana
+Eve
+Frank
+Grace
+Hugo
+Isabelle
+Jack
+Karen
+Liam
+Mona
+Nathan
+Olivia
+Paul
+Quentin
+Rose
+Sophie
+Tom
+Alice Isabelle
+Alice Tom
+Bob Jack
+Bob Quentin
+Bob Sophie
+Charlie Grace
+Diana Karen
+Diana Nathan
+Diana Rose
+Frank Mona
+Frank Nathan
+Frank Olivia
+Grace Jack
+Grace Rose
+Hugo Paul
+Hugo Quentin
+Hugo Tom
+Isabelle Sophie
+Jack Olivia
+Jack Quentin
+Jack Sophie
+Karen Liam
+Karen Mona
+Karen Nathan
+Karen Olivia
+Karen Sophie
+Liam Paul
+Mona Rose
+Mona Sophie
+Nathan Olivia
+Nathan Rose
+Olivia Rose
+Paul Quentin
+Rose Tom
+Sophie Tom
