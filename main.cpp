@@ -12,23 +12,23 @@
 int main(int argc, char* argv[]) {
 
     std::string inputFileName;
-    std::cout << ("Le nom du programme est: %s", argv[0]);
+    std::cout << "Le nom du programme est: " << argv[0];
 
     if (argc == 1) {
-        std::cout << ("\nAucun argument en parametres (utilise input.txt pour lire) ");
+        std::cout << "\nAucun argument en parametres (utilise input.txt pour lire) ";
         inputFileName = std::string("input.txt");
 
     }
     else if (argc >= 2) {
-        std::cout << ("\nNombre d'arguments passes: %d", argc);
-        std::cout << ("\n----La commande passee est ");
+        std::cout << "\nNombre d'arguments passes: " << argc;
+        std::cout << "\n----La commande passee est ";
         for (int i = 0; i < argc; i++)
-            std::cout << ("\nargv[%d]: %s", i, argv[i]);
+            std::cout << "\nargv[" << i << "]: " << argv[i];
         inputFileName = std::string(argv[1]);
     }
     else
     {
-        std::cout << ("\nCe programme prend un parametre dont un nom de fichier pour lire les donnees du graphe ");
+        std::cout << "\nCe programme prend un parametre dont un nom de fichier pour lire les donnees du graphe ";
     }
 
     std::cout << std::endl;
