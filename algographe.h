@@ -7,7 +7,6 @@
 
 #include <algorithm>
 #include <fstream>
-#include <iomanip>
 #include <iostream>
 #include <map>
 #include <queue>
@@ -53,40 +52,46 @@ Graphe<std::string> ChargerGraphe(const std::string& fichier) {
 
 void afficherGraphe(const Graphe<std::string>& graphe) {
     std::cout << "\n--- Graphe ---\n";
-    std::map<std::string, Graphe<std::string>::Sommet>::const_iterator it;
-    for (it = graphe.sommets.begin(); it != graphe.sommets.end(); ++it) {
-        std::cout << std::left << std::setw(10) << it->first << ":";
-        size_t i = 0, n = it->second.voisins.size();
-        std::set<std::string>::const_iterator jt;
-        for (jt = it->second.voisins.begin(); jt != it->second.voisins.end(); ++jt) {
-            std::cout << " " << *jt;
+    // on itere sur tous les sommets
+    std::map<std::string, Graphe<std::string>::Sommet>::const_iterator it_sommet;
+    for (it_sommet = graphe.sommets.begin(); it_sommet != graphe.sommets.end(); ++it_sommet) {
+        std::cout << it_sommet->first << " :";
+        // on itere sur les voisins du sommet
+        size_t i = 0, n = it_sommet->second.voisins.size();
+        std::set<std::string>::const_iterator it_voisin;
+        for (it_voisin = it_sommet->second.voisins.begin(); it_voisin != it_sommet->second.voisins.end(); ++it_voisin) {
+            std::cout << " " << *it_voisin;
             i++;
-            if (i != n) std::cout << ",";
+            if (i != n)
+                std::cout << ",";
         }
-        std::cout << "  \n";
+        std::cout << "\n";
     }
 }
 
-// Extraction des composantes connexes par recherche en largeur a partir de
-// chaque sommet non encore visite (voir section 13.2.1 des notes de cours).
 void composantesConnexes(const Graphe<std::string>& graphe) {
     std::cout << "\n--- Communautes detectees ---\n";
 
     std::map<std::string, int> composante;
     int numero = 0;
 
+    // on itere sur les sommets
     std::map<std::string, Graphe<std::string>::Sommet>::const_iterator it;
     for (it = graphe.sommets.begin(); it != graphe.sommets.end(); ++it) {
         const std::string& depart = it->first;
-        if (composante.count(depart)) continue;
+        if (composante.count(depart))
+            continue;
         numero++;
 
         std::queue<std::string> file;
         file.push(depart);
         composante[depart] = numero;
+
         while (!file.empty()) {
             std::string courant = file.front();
             file.pop();
+            
+            // on itere sur les voisins du sommet
             std::set<std::string>::const_iterator jt;
             const std::set<std::string>& voisins = graphe.sommets.at(courant).voisins;
             for (jt = voisins.begin(); jt != voisins.end(); ++jt) {
@@ -100,21 +105,22 @@ void composantesConnexes(const Graphe<std::string>& graphe) {
 
     for (int n = 1; n <= numero; n++) {
         std::cout << "Communaute " << n << " : ";
-        bool premier = true;
-        std::map<std::string, int>::const_iterator jt;
-        for (jt = composante.begin(); jt != composante.end(); ++jt) {
-            if (jt->second != n) continue;
-            if (!premier) std::cout << ", ";
-            std::cout << jt->first;
-            premier = false;
+        bool premiere_composante = true;
+
+        std::map<std::string, int>::const_iterator it;
+        for (it = composante.begin(); it != composante.end(); ++it) {
+            if (it->second != n) 
+                continue;
+            if (!premiere_composante) 
+                std::cout << ", ";
+            std::cout << it->first;
+            premiere_composante = false;
         }
+
         std::cout << "\n";
     }
 }
 
-// Plus court chemin par recherche en largeur (Algorithme 4 des notes de cours) :
-// dans un graphe sans poids, la recherche en largeur trouve le chemin le plus
-// court en nombre d'aretes.
 void plusCourtChemin(const Graphe<std::string>& graphe, const std::string& debut, const std::string& fin) {
     std::cout << "\n--- Plus court chemin de " << debut << " a " << fin << " ---\n";
 
@@ -133,14 +139,14 @@ void plusCourtChemin(const Graphe<std::string>& graphe, const std::string& debut
     while (!file.empty() && !trouve) {
         std::string courant = file.front();
         file.pop();
-        std::set<std::string>::const_iterator jt;
+        std::set<std::string>::const_iterator it;
         const std::set<std::string>& voisins = graphe.sommets.at(courant).voisins;
-        for (jt = voisins.begin(); jt != voisins.end(); ++jt) {
-            if (!graphe.sommets.at(*jt).visite) {
-                graphe.sommets.at(*jt).visite = true;
-                parent[*jt] = courant;
-                if (*jt == fin) { trouve = true; break; }
-                file.push(*jt);
+        for (it = voisins.begin(); it != voisins.end(); ++it) {
+            if (!graphe.sommets.at(*it).visite) {
+                graphe.sommets.at(*it).visite = true;
+                parent[*it] = courant;
+                if (*it == fin) { trouve = true; break; }
+                file.push(*it);
             }
         }
     }
@@ -166,55 +172,45 @@ void plusCourtChemin(const Graphe<std::string>& graphe, const std::string& debut
     std::cout << " (distance : " << chemin.size() - 1 << ")\n";
 }
 
-// Recherche en profondeur pour trouver les points d'articulation. Pour chaque
-// sommet, decouverte[] donne son ordre de visite et bas[] donne le plus petit
-// ordre de decouverte atteignable en remontant au plus une arete de retour.
-// Un sommet u (non racine) est un point d'articulation si un de ses enfants v
-// dans l'arbre de recherche ne peut pas atteindre un ancetre de u sans repasser
-// par u, c'est-a-dire si bas[v] >= decouverte[u]. La racine est un point
-// d'articulation si elle a plus d'un enfant dans l'arbre de recherche.
-void dfsArticulation(const Graphe<std::string>& graphe, const std::string& u, const std::string& parent,
-                      std::map<std::string, int>& decouverte, std::map<std::string, int>& bas,
-                      int& compteur, std::set<std::string>& articulation) {
-    decouverte[u] = compteur;
-    bas[u] = compteur;
-    compteur++;
-    int enfants = 0;
-
-    std::set<std::string>::const_iterator it;
-    const std::set<std::string>& voisins = graphe.sommets.at(u).voisins;
-    for (it = voisins.begin(); it != voisins.end(); ++it) {
-        const std::string& v = *it;
-        if (v == parent) continue;
-        if (!decouverte.count(v)) {
-            enfants++;
-            dfsArticulation(graphe, v, u, decouverte, bas, compteur, articulation);
-            bas[u] = std::min(bas[u], bas[v]);
-            if (!parent.empty() && bas[v] >= decouverte[u])
-                articulation.insert(u);
-        } else {
-            bas[u] = std::min(bas[u], decouverte[v]);
-        }
-    }
-
-    if (parent.empty() && enfants > 1)
-        articulation.insert(u);
-}
-
 void pointsArticulation(const Graphe<std::string>& graphe) {
     std::cout << "\n--- Points d'articulation ---\n";
 
-    std::map<std::string, int> decouverte, bas;
-    std::set<std::string> articulation;
-    int compteur = 0;
-
     std::map<std::string, Graphe<std::string>::Sommet>::const_iterator it;
     for (it = graphe.sommets.begin(); it != graphe.sommets.end(); ++it) {
-        if (!decouverte.count(it->first))
-            dfsArticulation(graphe, it->first, "", decouverte, bas, compteur, articulation);
-    }
+        const std::string& sommet = it->first;
+        const std::set<std::string>& voisins = it->second.voisins;
 
-    std::set<std::string>::const_iterator jt;
-    for (jt = articulation.begin(); jt != articulation.end(); ++jt)
-        std::cout << *jt << "\n";
+        // Un sommet avec 0 ou 1 voisin ne peut relier personne : inutile de le tester.
+        if (voisins.size() < 2) continue;
+
+        graphe.reinitVisite();
+        graphe.sommets.at(sommet).visite = true; // on "enleve" le sommet
+
+        int nbMorceaux = 0;
+        std::set<std::string>::const_iterator jt;
+        for (jt = voisins.begin(); jt != voisins.end(); ++jt) {
+            if (graphe.sommets.at(*jt).visite) continue;
+
+            nbMorceaux++;
+
+            std::queue<std::string> file;
+            graphe.sommets.at(*jt).visite = true;
+            file.push(*jt);
+            while (!file.empty()) {
+                std::string courant = file.front();
+                file.pop();
+                std::set<std::string>::const_iterator kt;
+                const std::set<std::string>& voisinsCourant = graphe.sommets.at(courant).voisins;
+                for (kt = voisinsCourant.begin(); kt != voisinsCourant.end(); ++kt) {
+                    if (!graphe.sommets.at(*kt).visite) {
+                        graphe.sommets.at(*kt).visite = true;
+                        file.push(*kt);
+                    }
+                }
+            }
+        }
+
+        if (nbMorceaux > 1)
+            std::cout << sommet << "\n";
+    }
 }
