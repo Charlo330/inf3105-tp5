@@ -1,4 +1,7 @@
 /**
+ * Charles-Antoine Lanthier
+ * LANC70040208
+ * 
  * algographe.h
  * TP5 -- Algorithmes des graphes
  * UQAM / Departement d'informatique
@@ -74,40 +77,40 @@ void composantesConnexes(const Graphe<std::string> &graphe)
     std::cout << "\n--- Communautes detectees ---\n";
 
     std::map<std::string, int> composante;
-    int numero = 0;
+    int id_composante = 0;
 
     // on itere sur les sommets
-    std::map<std::string, Graphe<std::string>::Sommet>::const_iterator it;
-    for (it = graphe.sommets.begin(); it != graphe.sommets.end(); ++it)
+    for (std::map<std::string, Graphe<std::string>::Sommet>::const_iterator it_sommet = graphe.sommets.begin(); it_sommet != graphe.sommets.end(); ++it_sommet)
     {
-        const std::string &depart = it->first;
-        if (composante.count(depart))
-            continue;
-        numero++;
-
-        std::queue<std::string> file;
-        file.push(depart);
-        composante[depart] = numero;
-
-        while (!file.empty())
+        const std::string &depart = it_sommet->first;
+        if (!composante.count(depart))
         {
-            std::string courant = file.front();
-            file.pop();
+            id_composante++;
 
-            // on itere sur les voisins du sommet
-            const std::set<std::string> &voisins = graphe.sommets.at(courant).voisins;
-            for (std::set<std::string>::const_iterator it_voisin = voisins.begin(); it_voisin != voisins.end(); ++it_voisin)
+            std::queue<std::string> file;
+            file.push(depart);
+            composante[depart] = id_composante;
+
+            while (!file.empty())
             {
-                if (!composante.count(*it_voisin))
+                std::string courant = file.front();
+                file.pop();
+
+                // on itere sur les voisins du sommet
+                const std::set<std::string> &voisins = graphe.sommets.at(courant).voisins;
+                for (std::set<std::string>::const_iterator it_voisin = voisins.begin(); it_voisin != voisins.end(); ++it_voisin)
                 {
-                    composante[*it_voisin] = numero;
-                    file.push(*it_voisin);
+                    if (!composante.count(*it_voisin))
+                    {
+                        composante[*it_voisin] = id_composante;
+                        file.push(*it_voisin);
+                    }
                 }
             }
         }
     }
 
-    for (int n = 1; n <= numero; n++)
+    for (int n = 1; n <= id_composante; n++)
     {
         std::cout << "Communaute " << n << " : ";
         bool premiere_composante = true;
@@ -147,20 +150,20 @@ void plusCourtChemin(const Graphe<std::string> &graphe, const std::string &debut
     {
         std::string courant = file.front();
         file.pop();
-        std::set<std::string>::const_iterator it;
+
         const std::set<std::string> &voisins = graphe.sommets.at(courant).voisins;
-        for (it = voisins.begin(); it != voisins.end(); ++it)
+        for (std::set<std::string>::const_iterator it_voisin = voisins.begin(); it_voisin != voisins.end(); ++it_voisin)
         {
-            if (!graphe.sommets.at(*it).visite)
+            if (!graphe.sommets.at(*it_voisin).visite)
             {
-                graphe.sommets.at(*it).visite = true;
-                parent[*it] = courant;
-                if (*it == fin)
+                graphe.sommets.at(*it_voisin).visite = true;
+                parent[*it_voisin] = courant;
+                if (*it_voisin == fin)
                 {
                     trouve = true;
                     break;
                 }
-                file.push(*it);
+                file.push(*it_voisin);
             }
         }
     }
@@ -194,11 +197,10 @@ void pointsArticulation(const Graphe<std::string> &graphe)
 {
     std::cout << "\n--- Points d'articulation ---\n";
 
-    std::map<std::string, Graphe<std::string>::Sommet>::const_iterator it;
-    for (it = graphe.sommets.begin(); it != graphe.sommets.end(); ++it)
+    for (std::map<std::string, Graphe<std::string>::Sommet>::const_iterator it_sommet = graphe.sommets.begin(); it_sommet != graphe.sommets.end(); ++it_sommet)
     {
-        const std::string &sommet = it->first;
-        const std::set<std::string> &voisins = it->second.voisins;
+        const std::string &sommet = it_sommet->first;
+        const std::set<std::string> &voisins = it_sommet->second.voisins;
 
         if (voisins.size() >= 2)
         {

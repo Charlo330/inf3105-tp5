@@ -1,3 +1,7 @@
+/**
+ * Charles-Antoine Lanthier
+ * LANC70040208
+ */
 /*  INF3105 - Structures de données et algorithmes
     Lab 9 Partie 1 -- Graphes / Représentations et algorithmes de base
 */
