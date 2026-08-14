@@ -19,13 +19,10 @@
 template <class S>
 class Graphe {
   public:
-    // Interface public pour créer le graphe.
     void ajouterSommet(const S& s);
     void ajouterAreteOrientee(const S& s1, const S& s2);
     void ajouterAreteNonOrientee(const S& s1, const S& s2);
 
-    // Interface public pour les requêtes de base.
-    // Amélioration possible : retourner le résultat au lieu de faire l'affichage à l'interne.
     void parcoursRechercheProfondeur(const S& s) const;
     void parcoursRechercheProfondeurIter(const S& s) const;
     void parcoursRechercheLargueur(const S& s) const;
@@ -34,12 +31,9 @@ class Graphe {
 
     struct Sommet {
         mutable bool visite = false;
-        std::set<S> voisins; // ensemble des sommets accessibles via les arêtes sortantes du sommet.
-                        // Cela est légèrement différent de la page 128 des notes de cours.
-                        // C'est voulu, car ici les arêtes ne sont pas étiquetées par un poids (ex: distance).
-                        // Pour attacher une étiquette, il suffirait de modifier pour : map<S, A> sortants;
+        std::set<S> voisins;
     };
-    std::map<S, Sommet> sommets; // identification --> sommet
+    std::map<S, Sommet> sommets;
 
   private:
     void parcoursProfondeur(const S& s) const;
@@ -71,7 +65,6 @@ void Graphe<S>::reinitVisite() const {
         it->second.visite = false;
 }
 
-// Recherche en profondeur (voir Algorithme 3 des notes de cours).
 template <class S>
 void Graphe<S>::parcoursProfondeur(const S& s) const {
     const Sommet& sommet = sommets.at(s);
@@ -92,8 +85,6 @@ void Graphe<S>::parcoursRechercheProfondeur(const S& s) const {
     std::cout << std::endl;
 }
 
-// Même parcours que ci-dessus, mais version non récursive avec une pile
-// (utile si le graphe est très profond, pour éviter un débordement de pile).
 template <class S>
 void Graphe<S>::parcoursRechercheProfondeurIter(const S& s) const {
     reinitVisite();
@@ -116,7 +107,6 @@ void Graphe<S>::parcoursRechercheProfondeurIter(const S& s) const {
     std::cout << std::endl;
 }
 
-// Recherche en largeur (voir Algorithme 4 des notes de cours).
 template <class S>
 void Graphe<S>::parcoursLargueur(const S& s) const {
     std::queue<S> file;
@@ -145,8 +135,6 @@ void Graphe<S>::parcoursRechercheLargueur(const S& s) const {
     std::cout << std::endl;
 }
 
-// Extraction des composantes connexes (voir section 13.2.1 des notes de cours) :
-// on relance une recherche en largeur à partir de chaque sommet non visité.
 template <class S>
 void Graphe<S>::extraireComposantesConnexes() const {
     reinitVisite();

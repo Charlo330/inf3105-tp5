@@ -1,7 +1,7 @@
 /**
  * Charles-Antoine Lanthier
  * LANC70040208
- * 
+ *
  * algographe.h
  * TP5 -- Algorithmes des graphes
  * UQAM / Departement d'informatique
